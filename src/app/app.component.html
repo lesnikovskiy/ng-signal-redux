@@ -5,6 +5,8 @@
       <option [value]="user.id">{{ user.name }}</option>
     }
   </select>
+  <input type="checkbox" (change)="onFilter($any($event.target))" />
+  Show only incomplete
 
   <h2>
     ToDos
@@ -12,4 +14,27 @@
       for: {{ currentMember()?.name }}
     }
   </h2>
+  @if (isLoading()) {
+    <div>Loading...</div>
+  }
+  @if (todosForMember().length > 0) {
+    <div class="grid">
+      <div class="cell-header">Todo</div>
+      <div class="cell-header">Completed?</div>
+
+      @for (t of todosForMember(); track t.id) {
+        <div class="cell">{{ t.title }}</div>
+        <div class="cell-check">
+          <input
+            type="checkbox"
+            [checked]="t.completed"
+            (change)="onChangeStatus(t, $event.target)" />
+        </div>
+      } @empty {
+        @if (!isLoading()) {
+          <div>No todos found</div>
+        }
+      }
+    </div>
+  }
 </div>

@@ -1,7 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { User, UserService } from './user.service';
-import { ToDo, TodoService } from './todo.service';
+import { UserService } from '@services/user.service';
+import { TodoService } from '@services/todo.service';
+import { ToDo } from '@models/todo';
 
 @Component({
   selector: 'app-root',
@@ -16,15 +17,21 @@ export class AppComponent {
 
   // Signals
   users = this.userService.members;
-  isLoading = signal(false);
-  currentMember = signal<User | undefined>(undefined);
-  todosForMember = signal<ToDo[]>([]);
-  errorMessage = signal(null);
+  isLoading = this.todoService.isLoading;
+  currentMember = this.todoService.currentMember;
+  todosForMember = this.todoService.filteredToDos;
+  errorMessage = this.todoService.errorMessage;
 
   // Actions
-  onFilter(ele: EventTarget | null) {}
+  onFilter(ele: EventTarget | null) {
+    this.todoService.filterToDos((ele as HTMLInputElement).checked);
+  }
 
-  onSelected(ele: EventTarget | null): void {}
+  onSelected(ele: EventTarget | null): void {
+    this.todoService.getToDosForMember(Number((ele as HTMLInputElement).value));
+  }
 
-  onChangeStatus(task: ToDo, ele: EventTarget | null) {}
+  onChangeStatus(task: ToDo, ele: EventTarget | null) {
+    this.todoService.changeStatus(task, (ele as HTMLInputElement).checked);
+  }
 }
