@@ -25,3 +25,22 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+# SSL Configuration
+
+Run this command to generate keys
+`openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes`
+
+Add the configuration to `angular.json`
+
+```
+"serve": {
+          ...
+          "options": {
+            "ssl": true,
+            "sslKey": "key.pem",
+            "sslCert": "cert.pem",
+            "port": 4500
+          },
+        },
+```

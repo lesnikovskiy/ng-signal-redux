@@ -1,10 +1,26 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { User } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  todoUrl   = '';
+  todoUrl = 'https://jsonplaceholder.typicode.com/todos';
 
-  constructor() {}
+  private readonly http = inject(HttpClient);
+}
+
+export interface ToDo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+export interface ToDoState {
+  isLoading: boolean;
+  currentMember: User | undefined;
+  memberToDos: ToDo[];
+  error: string | null;
 }
